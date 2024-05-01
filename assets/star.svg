@@ -1,0 +1,5 @@
+<svg  width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M16 0L19.5098 10.1176H30.6275L21.5686 16.9412L25.0784 27.0588L16 20.2353L6.92157 27.0588L10.4314 16.9412L1.37255 10.1176H12.4902L16 0Z" fill="#FFD700">
+            <animate attributeName="fill" values="#FFD700; #FBBF24; #FFD700" dur="2s" repeatCount="indefinite"/>
+          </path>
+        </svg>
