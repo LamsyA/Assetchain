@@ -16,6 +16,7 @@ import {
   sepolia,
   scrollTestnet,
   scrollSepolia,
+  bscTestnet
 } from "wagmi/chains";
 import {
   getDefaultConfig,
@@ -26,6 +27,7 @@ import {
   argentWallet,
   ledgerWallet,
   trustWallet,
+  okxWallet,
 } from "@rainbow-me/rainbowkit/wallets";
 import Navbar from "../components/Navbar/Navbar";
 
@@ -45,16 +47,18 @@ const config = getDefaultConfig({
     ...wallets,
     {
       groupName: "Other",
-      wallets: [argentWallet, trustWallet, ledgerWallet],
+      wallets: [argentWallet, trustWallet, ledgerWallet, okxWallet],
     },
   ],
   chains: [
     // mainnet,
+    bscTestnet,
     sepolia,
     scrollSepolia,
     // polygon,
     // optimism,
     // arbitrum,
+    
     base,
     ...(process.env.NEXT_PUBLIC_ENABLE_TESTNETS === "true" ? [sepolia] : []),
   ],
