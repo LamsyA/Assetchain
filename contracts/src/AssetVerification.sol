@@ -9,12 +9,12 @@ import "@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol";
 import "@openzeppelin/contracts/token/ERC721/extensions/ERC721Pausable.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/token/ERC721/extensions/ERC721Burnable.sol";
+
 /**
  * @title AssetVerification - Verification of Asset
  * @author @Olamide Adetula https://github.com/lamsya
  * @notice This contract is used for verifying the originality and authenticity of a Real World Asset.
  */
-
 contract AssetVerification is ERC721, ERC721URIStorage, ERC721Pausable, Ownable, ERC721Burnable {
     using Counters for Counters.Counter;
 
