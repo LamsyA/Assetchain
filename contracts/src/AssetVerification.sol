@@ -50,7 +50,7 @@ contract AssetVerification is ERC721, ERC721URIStorage, ERC721Pausable, Ownable,
     event AssetUpdated(uint256 indexed value, address indexed owner);
     event AssetCreated(address indexed owner, uint256 indexed tokenId, string uri);
 
-    constructor(address _owner) ERC721("REAL WORLD ASSET", "PWD") Ownable(_owner) {}
+    constructor() ERC721("REAL WORLD ASSET", "PWD") Ownable(msg.sender) {}
 
     modifier onlyLegalTeam() {
         if (legalTeam[msg.sender] == address(0)) {

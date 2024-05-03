@@ -13,7 +13,13 @@ import "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
  * @author @Mayowa Abikoye https://github.com/the-first-elder
  * @notice This contract is used for fractionizing Real World Asset.
  */
-contract Fractionalizer is ERC20, ERC20Pausable, ERC20Permit {
+contract AssetFractionaliser is ERC20, ERC20Pausable, ERC20Permit, Ownable {
+    // ==================
+    // ERROR
+    // =================
+
+    error AssetFractionaliser__AmountCannotBeZero();
+
     struct MetaDataEx {
         // The description of the asset
         string description;
@@ -39,6 +45,11 @@ contract Fractionalizer is ERC20, ERC20Pausable, ERC20Permit {
     // Pool Address
     address pool;
 
+    // =================================
+    // EVENTS
+    // =================================
+    event BuyFractionalized(address indexed from, address indexed to, uint256 amount);
+
     // ===================================
     // CONSTRUCTOR
     // ===================================
@@ -50,12 +61,15 @@ contract Fractionalizer is ERC20, ERC20Pausable, ERC20Permit {
         address _paymentToken, // payment token address
         string memory _description, // desctiption
         string memory _uri, // uri info with map
-        uint256 _totalSupply
-    ) ERC20(assetName, assetSymbol) ERC20Permit(assetName) {
+        uint256 _totalSupply,
+        address _pool,
+        address _owner
+    ) ERC20(assetName, assetSymbol) ERC20Permit(assetName) Ownable(_owner) {
         assetPrice = _assetPrice;
         paymentToken = _paymentToken;
         metadata = MetaDataEx({description: _description, uri: _uri, metadataHash: 0});
         maxSupply = _totalSupply;
+        pool = _pool;
     }
 
     function pause() public {
@@ -65,33 +79,24 @@ contract Fractionalizer is ERC20, ERC20Pausable, ERC20Permit {
     function unpause() public {
         _unpause();
     }
-    // todo
 
-    function buyFraction(address to, uint256 amount) public {
+    function buyFraction(address _to, uint256 amount) public {
         require(totalSupply() + amount <= maxSupply, "Fractionalizer: Asset sold out");
-        handlePayment(msg.sender);
-        _mint(to, amount);
+        if (amount == 0) {
+            revert AssetFractionaliser__AmountCannotBeZero();
+        }
+        uint256 amountToPay = (amount * assetPrice);
+        IERC20(paymentToken).safeTransferFrom(msg.sender, pool, amountToPay);
+        emit BuyFractionalized(msg.sender, pool, assetPrice);
+        _mint(_to, amount);
     }
 
     function _update(address from, address to, uint256 value) internal override(ERC20, ERC20Pausable) {
         super._update(from, to, value);
     }
 
-    function setPoolAddress(address _poolAddress) public {
+    function setPoolAddress(address _poolAddress) public onlyOwner {
         pool = _poolAddress;
-    }
-
-    // ===================================
-    // INTERNAL FUNCTIONS
-    // ===================================
-
-    /**
-     *
-     * @dev this function is used to debit ERC20 token from a `payer`, the amount debitted is the current ticket price
-     * @param payer this is the address paying for ticket
-     */
-    function handlePayment(address payer) internal {
-        IERC20(paymentToken).safeTransferFrom(payer, pool, assetPrice);
     }
 
     // =======================================

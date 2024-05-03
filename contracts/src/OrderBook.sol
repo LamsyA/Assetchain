@@ -4,10 +4,10 @@ pragma solidity ^0.8.0;
 import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
-import {Fractionalizer} from "./Fractionalize.sol";
+import {AssetFractionaliser} from "./AssetFractionaliser.sol";
 
 /**
- * @title Fractionalizer - Fractionalizing Asset
+ * @title AssetFractionaliser - Fractionalizing Asset
  * @author @Mayowa Abikoye https://github.com/the-first-elder
  * @notice This contract is used for Buying and Selling RWA
  */
@@ -29,7 +29,7 @@ contract OrderBook {
     }
 
     using SafeERC20 for ERC20;
-    using SafeERC20 for Fractionalizer;
+    using SafeERC20 for AssetFractionaliser;
 
     ERC20 public token;
     uint256 public basePrice;
@@ -49,7 +49,7 @@ contract OrderBook {
         paymentToken = _paymentToken;
     }
 
-    function listAsset(Fractionalizer _token, uint256 unitToSell, uint256 price, bool _isSell) public {
+    function listAsset(AssetFractionaliser _token, uint256 unitToSell, uint256 price, bool _isSell) public {
         require(unitToSell > 0, "unit must be greater than 0");
         require(price * unitToSell >= _token.getBasePrice() * unitToSell, "Price must be greater than base Price");
 
@@ -62,7 +62,7 @@ contract OrderBook {
         orderIdCounter++;
     }
 
-    function placeOrderToBuy(Fractionalizer _token, address seller, uint256 price, uint256 unit) public {
+    function placeOrderToBuy(AssetFractionaliser _token, address seller, uint256 price, uint256 unit) public {
         Order memory information = orders[seller];
         require(information.canSell == true, "buyer not selling");
         require(information.price / unit <= price, "price is lower than expected");
@@ -80,7 +80,7 @@ contract OrderBook {
         ERC20(paymentToken).safeTransferFrom(buyer, seller, price);
     }
 
-    function terminateOrder(Fractionalizer _token) public {
+    function terminateOrder(AssetFractionaliser _token) public {
         require(orders[msg.sender].user != address(0), "Order does not exist");
         Order memory information = orders[msg.sender];
 

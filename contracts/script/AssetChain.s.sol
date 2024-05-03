@@ -11,7 +11,7 @@ contract AssetChainScript is Script {
 
     function run() public {
         vm.startBroadcast();
-        asset = new AssetVerification(owner);
+        asset = new AssetVerification();
 
         vm.stopBroadcast();
     }
