@@ -107,28 +107,3 @@ contract OrderBook {
         return orderIdCounter;
     }
 }
-// function executeOrder(uint256 buyOrderId, uint256 sellOrderId) public {
-//     Order storage buyOrder = orders[buyOrderId];
-//     Order storage sellOrder = orders[sellOrderId];
-
-//     require(buyOrder.canSell, "Buy order ID is invalid");
-//     require(!sellOrder.isBuyOrder, "Sell order ID is invalid");
-//     require(buyOrder.price >= sellOrder.price, "Buy order price must be equal or higher than sell order price");
-
-//     uint256 amountToTransfer = buyOrder.amount < sellOrder.amount ? buyOrder.amount : sellOrder.amount;
-
-//     if (buyOrder.isBuyOrder) {
-//         token.transferFrom(buyOrder.user, address(this), amountToTransfer);
-//     } else {
-//         token.transfer(sellOrder.user, amountToTransfer);
-//     }
-
-//     if (sellOrder.price > basePrice) {
-//         basePrice = sellOrder.price;
-//         emit BasePriceUpdated(basePrice);
-//     }
-
-//     delete orders[buyOrderId];
-//     delete orders[sellOrderId];
-// }
-// }
