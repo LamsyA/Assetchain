@@ -95,6 +95,10 @@ contract AssetFractionaliser is ERC20, ERC20Pausable, ERC20Permit, Ownable {
         super._update(from, to, value);
     }
 
+    function updateAssetPrice(uint256 newPrice) public onlyOwner {
+        assetPrice = newPrice;
+    }
+
     function setPoolAddress(address _poolAddress) public onlyOwner {
         pool = _poolAddress;
     }

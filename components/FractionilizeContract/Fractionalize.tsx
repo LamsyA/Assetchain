@@ -1,7 +1,7 @@
 import React, { useState, FormEvent } from "react";
 import { useWriteContract } from "wagmi";
 import { abi } from "../../out/FractionalizerFactory.sol/FractionalizerFactory.json";
-import { FractionalizeFactory } from "../../CONSTANTS.json";
+import { ASSET_FACTORY } from "../../CONSTANTS.json";
 import { toast } from "react-toastify";
 import { FaTimes } from "react-icons/fa";
 import { watchContractEvent } from '@wagmi/core'
@@ -56,7 +56,7 @@ const FractionalizeForm: React.FC = () => {
       writeContract(
         {
           abi,
-          address: `0x${FractionalizeFactory}`,
+          address: `0x${ASSET_FACTORY}`,
           functionName: "fractionalize",
           args: [
             formData.tokenId,
@@ -95,7 +95,7 @@ const FractionalizeForm: React.FC = () => {
       
       
         const provider = new ethers.providers.JsonRpcProvider("https://sepolia-rpc.scroll.io/");
-        const contract = new ethers.Contract(`0x${FractionalizeFactory}`, abi, provider)
+        const contract = new ethers.Contract(`0x${ASSET_FACTORY}`, abi, provider)
         const eventFilter = contract.filters.FractionalizerCreated(); 
          // Event listener
          

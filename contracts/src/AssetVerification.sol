@@ -161,4 +161,8 @@ contract AssetVerification is ERC721, ERC721URIStorage, ERC721Pausable, Ownable,
     function supportsInterface(bytes4 interfaceId) public view override(ERC721, ERC721URIStorage) returns (bool) {
         return super.supportsInterface(interfaceId);
     }
+
+    function getAsset(uint256 tokenId) public view returns (Asset memory) {
+        return assetList[tokenId];
+    }
 }
