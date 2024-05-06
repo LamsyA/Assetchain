@@ -2,9 +2,9 @@
 // Compatible with OpenZeppelin Contracts ^5.0.0
 pragma solidity ^0.8.20;
 
-import "@openzeppelin/contracts/token/ERC721/IERC721.sol";
+import "lib/openzeppelin-contracts/contracts/token/ERC721/IERC721.sol";
 import {AssetFractionaliser} from "./AssetFractionaliser.sol";
-import "@openzeppelin/contracts/token/ERC721/IERC721Receiver.sol";
+import "lib/openzeppelin-contracts/contracts/token/ERC721/IERC721Receiver.sol";
 import {AssetVerification} from "./AssetVerification.sol";
 
 /**
@@ -19,7 +19,7 @@ contract AssetFactory is IERC721Receiver {
     // /this is a mapping of tokenId to the fractionalizers
     mapping(uint256 => address) public fractionalizers;
     mapping(uint256 => bool) public fractionalizerChekcer;
-
+    mapping (address => bool) public isFractioned;
     event FractionalizerCreated(address fractionalizer, uint256 tokenId);
 
     constructor(address _assetnft) {
@@ -51,6 +51,7 @@ contract AssetFactory is IERC721Receiver {
 
         fractionalizers[tokenId] = address(fractionalizer);
         fractionalizerChekcer[tokenId] = true;
+        isFractioned[address(fractionalizer)] = true;
         emit FractionalizerCreated(address(fractionalizer), tokenId);
     }
 
