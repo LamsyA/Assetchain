@@ -1,5 +1,8 @@
 import React, { useState } from "react";
 import IssueCertificateForm from "./IssueCertificate";
+import AddLegalTeamForm from "./AddLegalTeam";
+import AddAuditorForm from "./AddAuditor";
+import CreateAssetForm from "./CreateAsset";
 import Homepage from "../Homepage";
 import Link from "next/link";
 
@@ -28,6 +31,30 @@ const Admin: React.FC = () => {
             >
               Issue Certificate
             </li>
+            <li
+              className={`cursor-pointer py-2 px-4 ${
+                activeTab === "legalTeam" && "bg-gray-700"
+              }`}
+              onClick={() => handleTabChange("legalTeam")}
+            >
+              Add Legal Team
+            </li>
+            <li
+              className={`cursor-pointer py-2 px-4 ${
+                activeTab === "auditor" && "bg-gray-700"
+              }`}
+              onClick={() => handleTabChange("auditor")}
+            >
+              Add Auditor
+            </li>
+            <li
+              className={`cursor-pointer py-2 px-4 ${
+                activeTab === "asset" && "bg-gray-700"
+              }`}
+              onClick={() => handleTabChange("asset")}
+            >
+              Create Asset
+            </li>
           </ul>
         </div>
       </div>
@@ -38,6 +65,9 @@ const Admin: React.FC = () => {
           Certificate of Ownership
         </h1>
         {activeTab === "issue" && <IssueCertificateForm />}
+        {activeTab === "legalTeam" && <AddLegalTeamForm />}
+        {activeTab === "auditor" && <AddAuditorForm />}
+        {activeTab === "asset" && <CreateAssetForm />}
       </div>
     </div>
   );
