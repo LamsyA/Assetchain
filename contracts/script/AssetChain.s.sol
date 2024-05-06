@@ -17,7 +17,7 @@ contract AssetChainScript is Script {
         vm.startBroadcast();
         asset = new AssetVerification();
         assetFactory = new AssetFactory(address(asset));
-
+        // line 1
         vm.stopBroadcast();
     }
 }
