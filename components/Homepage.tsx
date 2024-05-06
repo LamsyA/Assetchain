@@ -14,14 +14,14 @@ import { WalletInstance } from "@rainbow-me/rainbowkit/dist/wallets/Wallet";
 
 import FractionalizeForm from "./FractionilizeContract/Fractionalize";
 import Link from "next/link";
-import IssueCertificateForm from "./adminowner/IssueCertificate";
+import CreateAsset from "./adminowner/CreateAsset";
 function Homepage() {
   return (
     <div className="">
       {/* <Navbar /> */}
       <div className="">
         <Hero />
-        <IssueCertificateForm />
+        <CreateAsset />
       </div>
       {/* <Main/> */}
       {/* <CreateOrder /> */}
