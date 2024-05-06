@@ -16,7 +16,8 @@ import {
   sepolia,
   scrollTestnet,
   scrollSepolia,
-  bscTestnet
+  bscTestnet,
+  localhost
 } from "wagmi/chains";
 import {
   getDefaultConfig,
@@ -42,6 +43,7 @@ const config = getDefaultConfig({
       "https://eth-sepolia.g.alchemy.com/v2/jRWeU9pFpeATDtbmRTHOuSuSp5OVVAO0"
     ), // http('https://eth-sepolia.g.alchemy.com/v2/...')
     [scrollSepolia.id]: http("https://sepolia-rpc.scroll.io/"),
+    [localhost.id]: http("http://localhost:8545"),
   },
   wallets: [
     ...wallets,
@@ -51,7 +53,7 @@ const config = getDefaultConfig({
     },
   ],
   chains: [
-    // mainnet,
+   localhost,
     bscTestnet,
     sepolia,
     scrollSepolia,

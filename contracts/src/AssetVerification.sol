@@ -3,11 +3,11 @@
 pragma solidity ^0.8.20;
 
 import "./Counters.sol";
-import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
-import "@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol";
-import "@openzeppelin/contracts/token/ERC721/extensions/ERC721Pausable.sol";
-import "@openzeppelin/contracts/access/Ownable.sol";
-import "@openzeppelin/contracts/token/ERC721/extensions/ERC721Burnable.sol";
+import "lib/openzeppelin-contracts/contracts/token/ERC721/ERC721.sol";
+import "lib/openzeppelin-contracts/contracts/token/ERC721/extensions/ERC721URIStorage.sol";
+import "lib/openzeppelin-contracts/contracts/token/ERC721/extensions/ERC721Pausable.sol";
+import "lib/openzeppelin-contracts/contracts/access/Ownable.sol";
+import "lib/openzeppelin-contracts/contracts/token/ERC721/extensions/ERC721Burnable.sol";
 
 /**
  * @title AssetVerification - Verification of Asset
@@ -160,5 +160,9 @@ contract AssetVerification is ERC721, ERC721URIStorage, ERC721Pausable, Ownable,
 
     function supportsInterface(bytes4 interfaceId) public view override(ERC721, ERC721URIStorage) returns (bool) {
         return super.supportsInterface(interfaceId);
+    }
+
+    function getAsset(uint256 tokenId) public view returns (Asset memory) {
+        return assetList[tokenId];
     }
 }

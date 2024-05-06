@@ -14,20 +14,20 @@ import { WalletInstance } from "@rainbow-me/rainbowkit/dist/wallets/Wallet";
 
 import FractionalizeForm from "./FractionilizeContract/Fractionalize";
 import Link from "next/link";
-import IssueCertificateForm from "./adminowner/IssueCertificate";
+import CreateAsset from "./adminowner/CreateAsset";
 function Homepage() {
   return (
     <div className="">
       {/* <Navbar /> */}
       <div className="">
         <Hero />
-        <IssueCertificateForm />
+        <CreateAsset />
       </div>
       {/* <Main/> */}
       {/* <CreateOrder /> */}
       {/* <FillOrder /> */}
       {/* <TerminateOrder /> */}
-      {/* <Admin /> */}
+      <Admin />
       {/* <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
       type="button" onClick={() => router.push('/components/FractionilizeContract/Fractionalize/')}> */}
       <Link href="/components/FractionilizeContract/Fractionalize/">

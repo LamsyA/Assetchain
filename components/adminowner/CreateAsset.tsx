@@ -2,15 +2,15 @@ import { useState } from "react";
 import { useWriteContract } from "wagmi";
 import { FaTimes } from "react-icons/fa";
 import { toast } from "react-toastify";
-import { abi } from "../../out/COFO.sol/COFO.json";
-import { CofoContractAddress } from "../../CONSTANTS.json";
+import { abi } from "../../out/AssetVerification.sol/AssetVerification.json";
+import { ASSET_VERIFICATION } from "../../CONSTANTS.json";
 import { ethers } from "ethers";
 import {
   useGlobalState,
   setGlobalState,
 } from "../../store";
 
-interface IssueCertificateData {
+interface CreateAssetData {
   address: string;
   tokenId: number;
   name: string;
@@ -19,12 +19,12 @@ interface IssueCertificateData {
   uri: string;
 }
 
-const IssueCertificateForm: React.FC = () => {
+const CreateAsset: React.FC = () => {
   const [createModal] = useGlobalState("createModal");
   const { data: hash, isPending, error, writeContract } = useWriteContract();
 
 
-  const [formData, setFormData] = useState<IssueCertificateData>({
+  const [formData, setFormData] = useState<CreateAssetData>({
     address: "",
     tokenId: 0,
     name: "",
@@ -66,7 +66,7 @@ const IssueCertificateForm: React.FC = () => {
       writeContract(
         {
           abi,
-          address: `0x${CofoContractAddress}`,
+          address: `0x${ASSET_VERIFICATION}`,
           functionName: "issueCertificate",
           args: [formData.address, BigInt(formData.tokenId), MetaData],
         },
@@ -239,11 +239,11 @@ const IssueCertificateForm: React.FC = () => {
           </div>
           <button
             type="submit"
-            className="inline-block bg-blue-600 px-6 py-2.5 text-white
+            className="inline-block bg-[#b24bf3] px-6 py-2.5 text-white
             font-medium  leading-tight text-md rounded-full 
-            shadow-md hover:bg-blue-700 mt-5"
+            shadow-md hover:bg-[#8941b6] mt-5"
           >
-            Issue COFO
+            Create Asset
           </button>
         </form>
       </div>
@@ -251,4 +251,4 @@ const IssueCertificateForm: React.FC = () => {
   );
 };
 
-export default IssueCertificateForm;
+export default CreateAsset;
