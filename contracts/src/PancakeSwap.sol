@@ -11,6 +11,14 @@ interface IPancakeRouter {
         address to,
         uint deadline
     ) external returns (uint[] memory amounts);
+
+      function swapExactTokensForETH(
+        uint amountIn,
+        uint amountOutMin,
+        address[] calldata path,
+        address to,
+        uint deadline
+    ) external returns (uint[] memory amounts);
 }
 
 
@@ -24,12 +32,15 @@ interface IPancakeRouter {
  
 contract TokenSwap {
     IPancakeRouter public pancakeRouter;
-
-    constructor(address _pancakeRouter) {
+    address public WBNBAddress; 
+    constructor(address _pancakeRouter, address _WBNBAddress) {
         pancakeRouter = IPancakeRouter(_pancakeRouter);
+        WBNBAddress = _WBNBAddress;
     }
 
-// address : 0x10ED43C718714eb63d5aA57B78B54704E256024E
+// address pancake : 0x10ED43C718714eb63d5aA57B78B54704E256024E
+// wbnb : 0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c
+
     function swapTokens(
         uint amountIn,
         uint amountOutMin,
@@ -38,6 +49,22 @@ contract TokenSwap {
         uint deadline
     ) external returns( uint[] memory amounts)  {
        amounts =  pancakeRouter.swapExactTokensForTokens(
+            amountIn,
+            amountOutMin,
+            path,
+            to,
+            deadline
+        );
+    }
+
+     function swapTokensToBNB(
+        uint amountIn,
+        uint amountOutMin,
+        address[] memory path,
+        address to,
+        uint deadline
+    ) external {
+        pancakeRouter.swapExactTokensForETH(
             amountIn,
             amountOutMin,
             path,
