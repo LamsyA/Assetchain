@@ -1,22 +1,43 @@
 import { useState } from "react";
+import { useWriteContract } from "wagmi";
+import { FaTimes } from "react-icons/fa";
+import { toast } from "react-toastify";
+import { abi } from "../../out/AssetVerification.sol/AssetVerification.json";
+import { ASSET_VERIFICATION } from "../../CONSTANTS.json";
+import { ethers } from "ethers";
+import {
+  useGlobalState,
+  setGlobalState,
+} from "../../store";
 
-interface UpdateCertificateData {
-  addressTo: string;
-  tokenId: number;
+interface CreateAssetData {
   address: string;
+  tokenId: number;
+  name: string;
+  symbol: string;
+  description: string;
+  uri: string;
 }
 
-const CreateAssetForm: React.FC = () => {
-  const [formData, setFormData] = useState<UpdateCertificateData>({
-    addressTo: "",
-    tokenId: 0,
+const CreateAsset: React.FC = () => {
+  const [createModal] = useGlobalState("createModal");
+  const { data: hash, isPending, error, writeContract } = useWriteContract();
+
+
+  const [formData, setFormData] = useState<CreateAssetData>({
     address: "",
+    tokenId: 0,
+    name: "",
+    symbol: "",
+    description: "",
+    uri: "",
   });
 
   const handleChange = (
     event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
   ) => {
     const { name, value } = event.target;
+
     // Handle number input for tokenId
     const newValue = name === "tokenId" ? parseInt(value) : value;
     setFormData((prevData) => ({ ...prevData, [name]: newValue }));
@@ -24,64 +45,210 @@ const CreateAssetForm: React.FC = () => {
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    console.log("Update Certificate:", formData);
-    // You can add logic here to handle form submission, such as sending data to an API
-    setFormData({ addressTo: "", tokenId: 0, address: "" });
+    if (!formData.address || !formData.tokenId || !formData.name) return;
+    console.log("Issue Certificate:", formData);
+
+    const newhash = ethers.utils.formatBytes32String(
+      `${formData.uri}`,
+    );
+
+    let MetaData = {
+      metadataHash: newhash,
+      name: formData.name,
+      symbol: formData.symbol,
+      description: formData.description,
+      uri: formData.uri,
+    };
+
+    console.log("address: ", formData.address);
+    console.log("metadata: ", MetaData);
+    try {
+      writeContract(
+        {
+          abi,
+          address: `0x${ASSET_VERIFICATION}`,
+          functionName: "issueCertificate",
+          args: [formData.address, BigInt(formData.tokenId), MetaData],
+        },
+        {
+          onSuccess: (data) => {
+            console.log("data: ", data);
+            toast.success("Certificate Issued");
+          },
+          onError: (error) => {
+            console.log("error: ", error);
+            toast.error(` Failed to issue certificate`);
+          }
+          
+          
+        },
+      );
+
+      // You can add logic here to handle form submission, such as sending data to an API
+      // setFormData({ address: "", tokenId: 0, metadata: "", name : "", symbol:"", description:"", uri:'' });
+    } catch (error) {
+      console.log("error: ", error);
+    }
+  };
+
+  const onClose = () => {
+    setGlobalState("createModal", "scale-0");
+    resetParam();
+  };
+  const resetParam = () => {
+    setFormData({
+      address: "",
+      tokenId: 0,
+      name: "",
+      symbol: "",
+      description: "",
+      uri: "",
+    });
   };
 
   return (
-    <form
-      onSubmit={handleSubmit}
-      className="flex flex-col w-full max-w-md mx-auto p-4 bg-white rounded-lg shadow-md"
+    <div
+      className={`fixed top-0 left-0 w-screen h-screen flex
+    items-center justify-center bg-black bg-opacity-50
+    transform transition-transform duration-300 ${createModal}`}
     >
-      <h2 className="text-xl font-bold text-gray-800">Update Certificate</h2>
-      <label htmlFor="addressTo" className="text-gray-700 font-medium mb-2">
-        Transfer To Address:
-      </label>
-      <input
-        type="text"
-        id="addressTo"
-        name="addressTo"
-        value={formData.addressTo}
-        onChange={handleChange}
-        className="border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-orange-500"
-      />
-      <br />
-
-      <label htmlFor="tokenId" className="text-gray-700 font-medium mb-2">
-        Token ID:
-      </label>
-      <input
-        type="number"
-        id="tokenId"
-        name="tokenId"
-        value={formData.tokenId}
-        onChange={handleChange}
-        className="border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-orange-500"
-      />
-      <br />
-
-      <label htmlFor="address" className="text-gray-700 font-medium mb-2">
-        Current Address:
-      </label>
-      <input
-        type="text"
-        id="address"
-        name="address"
-        value={formData.address}
-        onChange={handleChange}
-        className="border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-orange-500"
-      />
-      <br />
-
-      <button
-        type="submit"
-        className="bg-orange-500 text-white font-medium py-2 px-4 rounded hover:bg-orange-700 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:ring-offset-2"
+      <div
+        className=" bg-white shadow-xl shadow-black rounded-xl
+    w-11/12 md:w-2/5 h-7/12 p-6"
       >
-        Update
-      </button>
-    </form>
+        <form onSubmit={handleSubmit} className="flex flex-col">
+          <div className="flex justify-between items-center">
+            <p className="font-semibold  text-black">
+              {" "}
+              Certificate of Ownership
+            </p>
+            <button
+              type="button"
+              className="border-0 bg- text-black focus:outline-none "
+              onClick={onClose}
+            >
+              <FaTimes />
+            </button>
+          </div>
+          <div className="flex justify-center items-center mt-5">
+            <div className="rounded-xl overflow-hidden h-20 w-20">
+              <img
+                src={
+                  "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRfxgAU-BU1Lj7me8cXrw0pTRQxCL75tnMd40vTqvt_hA&s"
+                }
+                alt="project title"
+                className=" h-full w-full cursor-pointer object-cover    "
+              />
+            </div>
+          </div>
+          <div
+            className="flex justify-between items-center bg-gray-300
+            rounded-xl mt-5"
+          >
+            <input
+              className="block w-full bg-transparent border-0
+                 text-sm text-slate-700 focus:outline-none p-2 
+                 focus:ring-0"
+              type="text"
+              id="address"
+              name="address"
+              placeholder="to address "
+              value={formData.address}
+              onChange={handleChange}
+            />
+          </div>
+          <div
+            className="flex justify-between items-center bg-gray-300
+            rounded-xl mt-5"
+          >
+            <input
+              className="block w-full bg-transparent border-0
+                 text-sm text-slate-700 focus:outline-none p-2 
+                 focus:ring-0"
+              type="text"
+              id="uri"
+              name="uri"
+              placeholder="URI"
+              value={formData.uri}
+              onChange={handleChange}
+            />
+          </div>
+          <div
+            className="flex justify-between items-center bg-gray-300
+            rounded-xl mt-5"
+          >
+            <input
+              className="block w-full bg-transparent border-0
+                 text-sm text-slate-700 focus:outline-none p-2 
+                 focus:ring-0"
+              type="number"
+              step={1}
+              min={0}
+              name="tokenId"
+              placeholder="TokenId"
+              value={formData.tokenId}
+              onChange={handleChange}
+            />
+          </div>
+          <div
+            className="flex justify-between items-center bg-gray-300
+            rounded-xl mt-5"
+          >
+            <input
+              className="block w-full bg-transparent border-0
+                 text-sm text-slate-700focus:outline-none p-2 
+                 focus:ring-0"
+              type="text"
+              id="name"
+              name="name"
+              placeholder="Name"
+              value={formData.name}
+              onChange={handleChange}
+            />
+          </div>
+          <div
+            className="flex justify-between items-center bg-gray-300
+            rounded-xl mt-5"
+          >
+            <input
+              className="block w-full bg-transparent border-0
+                 text-sm text-slate-700focus:outline-none p-2 
+                 focus:ring-0"
+              type="text"
+              id="symbol"
+              name="symbol"
+              placeholder="symbol"
+              value={formData.symbol}
+              onChange={handleChange}
+            />
+          </div>
+          <div
+            className="flex justify-between items-center bg-gray-300
+            rounded-xl mt-5"
+          >
+            <textarea
+              className="block w-full bg-transparent border-0
+                 text-sm text-slate-700 focus:outline-none p-2 
+                 focus:ring-0"
+              id="description"
+              name="description"
+              placeholder="Description"
+              value={formData.description}
+              onChange={handleChange}
+            ></textarea>
+          </div>
+          <button
+            type="submit"
+            className="inline-block bg-[#b24bf3] px-6 py-2.5 text-white
+            font-medium  leading-tight text-md rounded-full 
+            shadow-md hover:bg-[#8941b6] mt-5"
+          >
+            Create Asset
+          </button>
+        </form>
+      </div>
+    </div>
   );
 };
 
-export default CreateAssetForm;
+export default CreateAsset;
