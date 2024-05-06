@@ -19,7 +19,6 @@ contract AssetFactory is IERC721Receiver {
     // /this is a mapping of tokenId to the fractionalizers
     mapping(uint256 => address) public fractionalizers;
     mapping(uint256 => bool) public fractionalizerChekcer;
-    mapping(uint256 => AssetVerification.Asset) public assetList;
 
     event FractionalizerCreated(address fractionalizer, uint256 tokenId);
 
@@ -61,9 +60,6 @@ contract AssetFactory is IERC721Receiver {
         // Update asset value in AssetVerification contract
         AssetVerification(AssetNFT).updateAsset(tokenId, newValue);
 
-        // Update asset value in assetList mapping
-        // assetList[tokenId].value = newValue;
-
         // Get the address of the associated AssetFractionaliser contract
         address fractionaliserAddress = fractionalizers[tokenId];
         require(fractionaliserAddress != address(0), "AssetFactory: Fractionaliser not found");
@@ -84,6 +80,6 @@ contract AssetFactory is IERC721Receiver {
     }
 
     function getAsset(uint256 tokenId) public view returns (AssetVerification.Asset memory) {
-        return assetList[tokenId];
+        return AssetVerification(AssetNFT).getAsset(tokenId);
     }
 }
