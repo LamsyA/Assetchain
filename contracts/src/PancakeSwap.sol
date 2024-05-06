@@ -38,7 +38,9 @@ contract TokenSwap {
         WBNBAddress = _WBNBAddress;
     }
 
-// address : 0x10ED43C718714eb63d5aA57B78B54704E256024E
+// address pancake : 0x10ED43C718714eb63d5aA57B78B54704E256024E
+// wbnb : 0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c
+
     function swapTokens(
         uint amountIn,
         uint amountOutMin,
