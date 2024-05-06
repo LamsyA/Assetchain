@@ -43,7 +43,7 @@ function Hero() {
                 onClick={openToggle}
                 className="px-6 py-3 cursor-pointer rounded-full bg-white text-gray-800 font-bold text-lg hover:bg-blue-600 hover:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors duration-300"
               >
-                Issue COFO
+                Create Asset
               </button>
 
 
