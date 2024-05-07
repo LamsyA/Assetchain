@@ -37,24 +37,20 @@ function Hero() {
             </Link>
 
             {/* Todo : Add admin wallet to issue COFO */}
-            {address == "0x4131811b8a4237712905650985A7474F8f92b18b" ? (
-              
-              <button
-                onClick={openToggle}
-                className="px-6 py-3 cursor-pointer rounded-full bg-white text-gray-800 font-bold text-lg hover:bg-blue-600 hover:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors duration-300"
-              >
-                Create Asset
-              </button>
 
+            <button
+              onClick={openToggle}
+              className="px-6 py-3 cursor-pointer rounded-full bg-white text-gray-800 font-bold text-lg hover:bg-blue-600 hover:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors duration-300"
+            >
+              Create Asset
+            </button>
 
-            ) : (
-              <button
-                onClick={fractionToggle}
-                className="px-6 py-3 cursor-pointer rounded-full text-white font-bold text-lg hover:bg-[#b24bf3] hover:text-white focus:outline-none focus:ring-2 focus:ring-[#b24bf3] border-[#b24bf3] border-2 focus:ring-offset-2 transition-colors duration-300"
-              >
-                Fractionise Asset
-              </button>
-            )}
+            <button
+              onClick={fractionToggle}
+              className="px-6 py-3 cursor-pointer rounded-full text-white font-bold text-lg hover:bg-[#b24bf3] hover:text-white focus:outline-none focus:ring-2 focus:ring-[#b24bf3] border-[#b24bf3] border-2 focus:ring-offset-2 transition-colors duration-300"
+            >
+              Fractionise Asset
+            </button>
           </div>
         </div>
         <div id="learn-more" className="mt-12 max-w-4xl mx-auto">

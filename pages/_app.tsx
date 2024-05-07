@@ -17,7 +17,8 @@ import {
   scrollTestnet,
   scrollSepolia,
   bscTestnet,
-  localhost
+  localhost,
+  opBNBTestnet,
 } from "wagmi/chains";
 import {
   getDefaultConfig,
@@ -35,7 +36,7 @@ import Navbar from "../components/Navbar/Navbar";
 const { wallets } = getDefaultWallets();
 
 const config = getDefaultConfig({
-  appName: "Peeps: The decentralized platform",
+  appName: "Blockshare: The decentralized platform",
   projectId: "7f49c7e89e54528522eef8334c58506e",
   transports: {
     [mainnet.id]: http(""), // http('https://eth-mainnet.g.alchemy.com/v2/...')
@@ -43,7 +44,8 @@ const config = getDefaultConfig({
       "https://eth-sepolia.g.alchemy.com/v2/jRWeU9pFpeATDtbmRTHOuSuSp5OVVAO0"
     ), // http('https://eth-sepolia.g.alchemy.com/v2/...')
     [scrollSepolia.id]: http("https://sepolia-rpc.scroll.io/"),
-    [localhost.id]: http("http://localhost:8545"),
+    [bscTestnet.id]: http("https://data-seed-prebsc-1-s1.binance.org:8545"),
+    [localhost.id]: http("http://127.0.0.1:8545"),
   },
   wallets: [
     ...wallets,
@@ -53,14 +55,14 @@ const config = getDefaultConfig({
     },
   ],
   chains: [
-   localhost,
     bscTestnet,
     sepolia,
     scrollSepolia,
+    localhost,
     // polygon,
     // optimism,
     // arbitrum,
-    
+
     base,
     ...(process.env.NEXT_PUBLIC_ENABLE_TESTNETS === "true" ? [sepolia] : []),
   ],

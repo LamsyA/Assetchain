@@ -2,19 +2,14 @@ import { useState } from "react";
 import { useWriteContract } from "wagmi";
 import { FaTimes } from "react-icons/fa";
 import { toast } from "react-toastify";
-import { abi } from "../../out/AssetVerification.sol/AssetVerification.json";
-import { ASSET_VERIFICATION } from "../../CONSTANTS.json";
-import { ethers } from "ethers";
-import {
-  useGlobalState,
-  setGlobalState,
-} from "../../store";
+import { abi } from "../../contracts/out/AssetVerification.sol/AssetVerification.json";
+import { AssetVerification } from "../../CONSTANTS.json";
+
+import { useGlobalState, setGlobalState } from "../../store";
 
 interface CreateAssetData {
   address: string;
-  tokenId: number;
   name: string;
-  symbol: string;
   description: string;
   uri: string;
 }
@@ -23,52 +18,36 @@ const CreateAsset: React.FC = () => {
   const [createModal] = useGlobalState("createModal");
   const { data: hash, isPending, error, writeContract } = useWriteContract();
 
-
   const [formData, setFormData] = useState<CreateAssetData>({
     address: "",
-    tokenId: 0,
     name: "",
-    symbol: "",
     description: "",
     uri: "",
   });
 
   const handleChange = (
-    event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+    event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
     const { name, value } = event.target;
-
-    // Handle number input for tokenId
-    const newValue = name === "tokenId" ? parseInt(value) : value;
-    setFormData((prevData) => ({ ...prevData, [name]: newValue }));
+    setFormData((prevData) => ({ ...prevData, [name]: value }));
   };
 
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    if (!formData.address || !formData.tokenId || !formData.name) return;
-    console.log("Issue Certificate:", formData);
-
-    const newhash = ethers.utils.formatBytes32String(
-      `${formData.uri}`,
-    );
-
-    let MetaData = {
-      metadataHash: newhash,
-      name: formData.name,
-      symbol: formData.symbol,
-      description: formData.description,
-      uri: formData.uri,
-    };
-
-    console.log("address: ", formData.address);
-    console.log("metadata: ", MetaData);
+    if (!formData.address || !formData.name) return;
+    console.log("Create Asset:", formData);
     try {
       writeContract(
         {
           abi,
-          address: `0x${ASSET_VERIFICATION}`,
-          functionName: "issueCertificate",
-          args: [formData.address, BigInt(formData.tokenId), MetaData],
+          address: `0x${AssetVerification}`,
+          functionName: "createAsset",
+          args: [
+            formData.address,
+            formData.name,
+            formData.description,
+            formData.uri,
+          ],
         },
         {
           onSuccess: (data) => {
@@ -76,31 +55,26 @@ const CreateAsset: React.FC = () => {
             toast.success("Certificate Issued");
           },
           onError: (error) => {
-            console.log("error: ", error);
+            console.log("error: ", error.stack);
             toast.error(` Failed to issue certificate`);
-          }
-          
-          
-        },
+          },
+        }
       );
-
-      // You can add logic here to handle form submission, such as sending data to an API
-      // setFormData({ address: "", tokenId: 0, metadata: "", name : "", symbol:"", description:"", uri:'' });
     } catch (error) {
-      console.log("error: ", error);
+      console.error("Error creating asset:", error);
+      toast.error("Failed to create asset");
     }
   };
 
   const onClose = () => {
     setGlobalState("createModal", "scale-0");
-    resetParam();
+    resetForm();
   };
-  const resetParam = () => {
+
+  const resetForm = () => {
     setFormData({
       address: "",
-      tokenId: 0,
       name: "",
-      symbol: "",
       description: "",
       uri: "",
     });
@@ -119,7 +93,6 @@ const CreateAsset: React.FC = () => {
         <form onSubmit={handleSubmit} className="flex flex-col">
           <div className="flex justify-between items-center">
             <p className="font-semibold  text-black">
-              {" "}
               Certificate of Ownership
             </p>
             <button
@@ -130,106 +103,31 @@ const CreateAsset: React.FC = () => {
               <FaTimes />
             </button>
           </div>
-          <div className="flex justify-center items-center mt-5">
-            <div className="rounded-xl overflow-hidden h-20 w-20">
-              <img
-                src={
-                  "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRfxgAU-BU1Lj7me8cXrw0pTRQxCL75tnMd40vTqvt_hA&s"
-                }
-                alt="project title"
-                className=" h-full w-full cursor-pointer object-cover    "
-              />
-            </div>
-          </div>
-          <div
-            className="flex justify-between items-center bg-gray-300
-            rounded-xl mt-5"
-          >
+          <div className="flex justify-between items-center bg-gray-300 rounded-xl mt-5">
             <input
-              className="block w-full bg-transparent border-0
-                 text-sm text-slate-700 focus:outline-none p-2 
-                 focus:ring-0"
+              className="block w-full bg-transparent border-0 text-sm text-slate-700 focus:outline-none p-2 focus:ring-0"
               type="text"
               id="address"
               name="address"
-              placeholder="to address "
+              placeholder="Owner Address"
               value={formData.address}
               onChange={handleChange}
             />
           </div>
-          <div
-            className="flex justify-between items-center bg-gray-300
-            rounded-xl mt-5"
-          >
+          <div className="flex justify-between items-center bg-gray-300 rounded-xl mt-5">
             <input
-              className="block w-full bg-transparent border-0
-                 text-sm text-slate-700 focus:outline-none p-2 
-                 focus:ring-0"
-              type="text"
-              id="uri"
-              name="uri"
-              placeholder="URI"
-              value={formData.uri}
-              onChange={handleChange}
-            />
-          </div>
-          <div
-            className="flex justify-between items-center bg-gray-300
-            rounded-xl mt-5"
-          >
-            <input
-              className="block w-full bg-transparent border-0
-                 text-sm text-slate-700 focus:outline-none p-2 
-                 focus:ring-0"
-              type="number"
-              step={1}
-              min={0}
-              name="tokenId"
-              placeholder="TokenId"
-              value={formData.tokenId}
-              onChange={handleChange}
-            />
-          </div>
-          <div
-            className="flex justify-between items-center bg-gray-300
-            rounded-xl mt-5"
-          >
-            <input
-              className="block w-full bg-transparent border-0
-                 text-sm text-slate-700focus:outline-none p-2 
-                 focus:ring-0"
+              className="block w-full bg-transparent border-0 text-sm text-slate-700 focus:outline-none p-2 focus:ring-0"
               type="text"
               id="name"
               name="name"
-              placeholder="Name"
+              placeholder="Asset Name"
               value={formData.name}
               onChange={handleChange}
             />
           </div>
-          <div
-            className="flex justify-between items-center bg-gray-300
-            rounded-xl mt-5"
-          >
-            <input
-              className="block w-full bg-transparent border-0
-                 text-sm text-slate-700focus:outline-none p-2 
-                 focus:ring-0"
-              type="text"
-              id="symbol"
-              name="symbol"
-              placeholder="symbol"
-              value={formData.symbol}
-              onChange={handleChange}
-            />
-          </div>
-          <div
-            className="flex justify-between items-center bg-gray-300
-            rounded-xl mt-5"
-          >
+          <div className="flex justify-between items-center bg-gray-300 rounded-xl mt-5">
             <textarea
-              className="block w-full bg-transparent border-0
-                 text-sm text-slate-700 focus:outline-none p-2 
-                 focus:ring-0"
+              className="block w-full bg-transparent border-0 text-sm text-slate-700 focus:outline-none p-2 focus:ring-0"
               id="description"
               name="description"
               placeholder="Description"
@@ -237,11 +135,20 @@ const CreateAsset: React.FC = () => {
               onChange={handleChange}
             ></textarea>
           </div>
+          <div className="flex justify-between items-center bg-gray-300 rounded-xl mt-5">
+            <input
+              className="block w-full bg-transparent border-0 text-sm text-slate-700 focus:outline-none p-2 focus:ring-0"
+              type="text"
+              id="uri"
+              name="uri"
+              placeholder="Asset URI"
+              value={formData.uri}
+              onChange={handleChange}
+            />
+          </div>
           <button
             type="submit"
-            className="inline-block bg-[#b24bf3] px-6 py-2.5 text-white
-            font-medium  leading-tight text-md rounded-full 
-            shadow-md hover:bg-[#8941b6] mt-5"
+            className="inline-block bg-[#b24bf3] px-6 py-2.5 text-white font-medium  leading-tight text-md rounded-full shadow-md hover:bg-[#8941b6] mt-5"
           >
             Create Asset
           </button>
