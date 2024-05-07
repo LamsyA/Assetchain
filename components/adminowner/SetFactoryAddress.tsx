@@ -8,7 +8,7 @@ interface CreateAssetData {
   address: string;
 }
 
-const AddLegalTeam: React.FC = () => {
+const SetFactoryAddress: React.FC = () => {
   const { data: hash, isPending, error, writeContract } = useWriteContract();
 
   const [formData, setFormData] = useState<CreateAssetData>({
@@ -31,7 +31,7 @@ const AddLegalTeam: React.FC = () => {
         {
           abi,
           address: `0x${AssetVerification}`,
-          functionName: "addLegalTeam",
+          functionName: "setFactoryContractaddress",
           args: [formData.address],
         },
         {
@@ -74,7 +74,9 @@ const AddLegalTeam: React.FC = () => {
       >
         <form onSubmit={handleSubmit} className="flex flex-col">
           <div className="flex justify-center items-center">
-            <p className="font-semibold t text-black">Add Legal Team</p>
+            <p className="font-semibold uppercase text-black">
+              set Factory Address
+            </p>
           </div>
           <div className="flex justify-between items-center bg-gray-300 rounded-xl mt-5">
             <input
@@ -82,7 +84,7 @@ const AddLegalTeam: React.FC = () => {
               type="text"
               id="address"
               name="address"
-              placeholder="Legal Team Address"
+              placeholder="Factory Address"
               value={formData.address}
               onChange={handleChange}
             />
@@ -99,4 +101,4 @@ const AddLegalTeam: React.FC = () => {
   );
 };
 
-export default AddLegalTeam;
+export default SetFactoryAddress;

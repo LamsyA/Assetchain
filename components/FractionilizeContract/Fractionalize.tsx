@@ -1,18 +1,14 @@
 import React, { useState, FormEvent } from "react";
 import { useWriteContract } from "wagmi";
-import { abi } from "../../out/FractionalizerFactory.sol/FractionalizerFactory.json";
+import { abi } from "../../contracts/out/AssetVerification.sol/AssetVerification.json";
 import { ASSET_FACTORY } from "../../CONSTANTS.json";
 import { toast } from "react-toastify";
 import { FaTimes } from "react-icons/fa";
-import { watchContractEvent } from '@wagmi/core'
+import { watchContractEvent } from "@wagmi/core";
 import { config } from "../../config";
 
-import {
-  useGlobalState,
-  setGlobalState,
-} from "../../store";
+import { useGlobalState, setGlobalState } from "../../store";
 import { ethers } from "ethers";
-
 
 interface FractionalizeData {
   tokenId: string;
@@ -27,7 +23,13 @@ interface FractionalizeData {
 
 const FractionalizeForm: React.FC = () => {
   let FractionalizerAddress: any;
-  const { data: hash, isPending,isSuccess,  error, writeContract } = useWriteContract();
+  const {
+    data: hash,
+    isPending,
+    isSuccess,
+    error,
+    writeContract,
+  } = useWriteContract();
   const [fraction] = useGlobalState("fraction");
 
   const [formData, setFormData] = useState<FractionalizeData>({
@@ -42,7 +44,7 @@ const FractionalizeForm: React.FC = () => {
   });
 
   const handleChange = (
-    event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+    event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
     const { name, value } = event.target;
     setFormData((prevData) => ({ ...prevData, [name]: value }));
@@ -50,8 +52,8 @@ const FractionalizeForm: React.FC = () => {
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-     console.log("Fractionalize:", formData);
-   
+    console.log("Fractionalize:", formData);
+
     try {
       writeContract(
         {
@@ -68,52 +70,52 @@ const FractionalizeForm: React.FC = () => {
             formData.description,
             formData.uri,
           ],
-        }, {
-          onSuccess: async(data:any) => {
+        },
+        {
+          onSuccess: async (data: any) => {
             console.log("data: ", data);
-            const contractAddress = data?.to; 
+            const contractAddress = data?.to;
             console.log("contractAddress: ", contractAddress);
-            toast.success(`Your Asset transaction hash: ${data}`); 
+            toast.success(`Your Asset transaction hash: ${data}`);
             onClose();
-    //          setFormData({
-    //   tokenId: "",
-    //   assetManager: "",
-    //   assetName: "",
-    //   assetSymbol: "",
-    //   assetPrice: "",
-    //   paymentToken: "",
-    //   description: "",
-    //   uri: "",
-    // });
+            //          setFormData({
+            //   tokenId: "",
+            //   assetManager: "",
+            //   assetName: "",
+            //   assetSymbol: "",
+            //   assetPrice: "",
+            //   paymentToken: "",
+            //   description: "",
+            //   uri: "",
+            // });
           },
           onError: (error) => {
             console.log("error: ", error);
             toast.error(` Failed to fractionalize asset`);
           },
-        },
+        }
       );
-      
-      
-        const provider = new ethers.providers.JsonRpcProvider("https://sepolia-rpc.scroll.io/");
-        const contract = new ethers.Contract(`0x${ASSET_FACTORY}`, abi, provider)
-        const eventFilter = contract.filters.FractionalizerCreated(); 
-         // Event listener
-         
-           contract.on(eventFilter, (fractionalizer, tokenId, event) => {
-            FractionalizerAddress = fractionalizer;
-            console.log("FractionalizerCreated event emitted:");
-            console.log("Your Asset Contract Address: ", fractionalizer);
-            console.log("Token ID:", tokenId.toString());
-            // console.log("Event:", event);
-          });
-      
+
+      const provider = new ethers.providers.JsonRpcProvider(
+        "https://sepolia-rpc.scroll.io/"
+      );
+      const contract = new ethers.Contract(`0x${ASSET_FACTORY}`, abi, provider);
+      const eventFilter = contract.filters.FractionalizerCreated();
+      // Event listener
+
+      contract.on(eventFilter, (fractionalizer, tokenId, event) => {
+        FractionalizerAddress = fractionalizer;
+        console.log("FractionalizerCreated event emitted:");
+        console.log("Your Asset Contract Address: ", fractionalizer);
+        console.log("Token ID:", tokenId.toString());
+        // console.log("Event:", event);
+      });
+
       // toast.promise(newFractionalizerPromise, {
       //   pending: "Fractionalizing...",
       //   success: `Contract Address: ${FractionalizerAddress}`,
       //   error: "Fractionalization failed",
       // })
-
-
     } catch (error) {
       console.log("error: ", error);
     }
@@ -145,11 +147,7 @@ const FractionalizeForm: React.FC = () => {
     });
   };
 
-   
-  
- 
   return (
-   
     <div
       className={`fixed top-10 left-0 bottom-2 w-screen h-screen flex
     items-center justify-center bg-black bg-opacity-50
@@ -161,10 +159,7 @@ const FractionalizeForm: React.FC = () => {
       >
         <form onSubmit={handleSubmit} className="flex flex-col">
           <div className="flex justify-between items-center">
-            <p className="font-semibold  text-black">
-              {" "}
-              Fractionalize Asset
-            </p>
+            <p className="font-semibold  text-black"> Fractionalize Asset</p>
 
             <button
               type="button"
@@ -175,7 +170,6 @@ const FractionalizeForm: React.FC = () => {
             </button>
           </div>
           <div className="flex justify-center items-center mt-1">
-            
             <div className="rounded-xl overflow-hidden h-20 w-20 animate-pulse">
               <img
                 src={
@@ -240,41 +234,40 @@ const FractionalizeForm: React.FC = () => {
             />
           </div>
           <div className="flex justify-between items-center">
-
-          <div
-            className="flex justify-between items-center bg-gray-300
+            <div
+              className="flex justify-between items-center bg-gray-300
             rounded-xl mt-5 mr-5"
-          >
-            <input
-              className="block w-full bg-transparent border-0
+            >
+              <input
+                className="block w-full bg-transparent border-0
                  text-sm text-slate-700 focus:outline-none p-1.5 
                  focus:ring-0"
-              type="text"
-              id="assetSymbol"
-              name="assetSymbol"
-              placeholder="Asset Symbol"
-              value={formData.assetSymbol}
-              onChange={handleChange}
-              required
-            />
-          </div>
-          <div
-            className="flex justify-between items-center bg-gray-300
+                type="text"
+                id="assetSymbol"
+                name="assetSymbol"
+                placeholder="Asset Symbol"
+                value={formData.assetSymbol}
+                onChange={handleChange}
+                required
+              />
+            </div>
+            <div
+              className="flex justify-between items-center bg-gray-300
             rounded-xl mt-5"
-          >
-            <input
-              className="block w-full bg-transparent border-0
+            >
+              <input
+                className="block w-full bg-transparent border-0
                  text-sm text-slate-700focus:outline-none p-1.5
                  focus:ring-0"
-              type="text"
-              id="assetPrice"
-              name="assetPrice"
-              placeholder="Asset Price"
-              value={formData.assetPrice}
-              onChange={handleChange}
-              required
-            />
-          </div>
+                type="text"
+                id="assetPrice"
+                name="assetPrice"
+                placeholder="Asset Price"
+                value={formData.assetPrice}
+                onChange={handleChange}
+                required
+              />
+            </div>
           </div>
           <div
             className="flex justify-between items-center bg-gray-300
