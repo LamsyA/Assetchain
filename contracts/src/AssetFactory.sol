@@ -46,7 +46,7 @@ contract AssetFactory is IERC721Receiver {
         AssetVerification.Asset memory asset = AssetVerification(AssetNFT).getAsset(tokenId);
 
         AssetFractionaliser fractionalizer = new AssetFractionaliser(
-            asset.name, _symbol, asset.value, _paymentToken, _description, asset.uri, _totalSupply, _pool, _owner
+            asset.name, _symbol, asset.value, _paymentToken, asset.description, asset.uri, _totalSupply, _pool, _owner
         );
 
         fractionalizers[tokenId] = address(fractionalizer);

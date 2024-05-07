@@ -40,6 +40,7 @@ contract AssetVerification is ERC721, ERC721URIStorage, ERC721Pausable, Ownable,
         bool verify;
         uint256 tokenid;
         string uri;
+        string description;
     }
 
     mapping(uint256 => Asset) public assetList;
@@ -82,7 +83,7 @@ contract AssetVerification is ERC721, ERC721URIStorage, ERC721Pausable, Ownable,
         audtiorTeam[_auditorTeam] = _auditorTeam;
     }
 
-    function createAsset(address _owner, string memory _assetName, string memory _assertUri)
+    function createAsset(address _owner, string memory _assetName,string memory _description, string memory _assertUri)
         public
         onlyLegalTeam
         canNotBeZeroAddress(_owner)
@@ -105,6 +106,7 @@ contract AssetVerification is ERC721, ERC721URIStorage, ERC721Pausable, Ownable,
         newAsset.verify = true;
         newAsset.tokenid = tokenId;
         newAsset.uri = _assertUri;
+        newAsset.description = _description;
 
         _safeMint(FractionalizerFactory, tokenId);
         _setTokenURI(tokenId, newAsset.uri);
