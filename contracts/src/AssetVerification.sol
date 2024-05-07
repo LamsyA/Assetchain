@@ -32,7 +32,7 @@ contract AssetVerification is ERC721, ERC721URIStorage, ERC721Pausable, Ownable,
     address public FractionalizerFactory;
     // Counter for token ID
     Counters.Counter private _TokenId;
-
+    bool setFactory;
     struct Asset {
         string name;
         uint256 value;
@@ -127,7 +127,9 @@ contract AssetVerification is ERC721, ERC721URIStorage, ERC721Pausable, Ownable,
     }
 
     function setFactoryContractaddress(address _factoryContract) public canNotBeZeroAddress(_factoryContract) {
+        require(!setFactory, "Factory already set");
         FractionalizerFactory = _factoryContract;
+        setFactory = true;
     }
 
     /**
