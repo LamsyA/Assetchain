@@ -1,9 +1,7 @@
 import React, { useState } from "react";
 import CreateAsset from "./CreateAsset";
 import AddLegalTeamForm from "./AddLegalTeam";
-import SetFactoryAddress from "./SetFactoryAddress";
 import AddAuditorForm from "./AddAuditor";
-import CreateAssetForm from "./CreateAsset";
 import Link from "next/link";
 
 const Admin: React.FC = () => {
@@ -32,7 +30,7 @@ const Admin: React.FC = () => {
               }`}
               onClick={() => handleTabChange("issue")}
             >
-              Issue Certificate
+              Create Asset
             </li>
             <li
               className={`cursor-pointer py-2 px-4 ${
@@ -52,24 +50,6 @@ const Admin: React.FC = () => {
             >
               Add Auditor
             </li>
-            <li
-              className={`cursor-pointer py-2 px-4 ${
-                activeTab === "asset" &&
-                "bg-[#b24bf3] text-white rounded-lg shadow-sm shadow-orange-50"
-              }`}
-              onClick={() => handleTabChange("asset")}
-            >
-              Create Asset
-            </li>
-            <li
-              className={`cursor-pointer py-2 px-4 ${
-                activeTab === "setfactory" &&
-                "bg-[#b24bf3] text-white rounded-lg shadow-sm shadow-orange-50"
-              }`}
-              onClick={() => handleTabChange("setfactory")}
-            >
-              Set Factory
-            </li>
           </ul>
         </div>
       </div>
@@ -82,8 +62,6 @@ const Admin: React.FC = () => {
         {activeTab === "issue" && <CreateAsset />}
         {activeTab === "legalTeam" && <AddLegalTeamForm />}
         {activeTab === "auditor" && <AddAuditorForm />}
-        {activeTab === "asset" && <CreateAssetForm />}
-        {activeTab === "setfactory" && <SetFactoryAddress />}
       </div>
     </div>
   );
