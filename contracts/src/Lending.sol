@@ -3,11 +3,10 @@
 pragma solidity ^0.8.0;
 
 // import "./INFT.sol";
-import { AssetFractionaliser} from "./AssetFractionaliser.sol";
+import {AssetFractionaliser} from "./AssetFractionaliser.sol";
 import {AssetFactory} from "./AssetFactory.sol";
-import  {SafeERC20}from "lib/openzeppelin-contracts/contracts/token/ERC20/utils/SafeERC20.sol";
+import {SafeERC20} from "lib/openzeppelin-contracts/contracts/token/ERC20/utils/SafeERC20.sol";
 import {ERC20} from "lib/openzeppelin-contracts/contracts/token/ERC20/ERC20.sol";
-
 
 /**
  * @title Fractionalizer - Fractionalizing Asset
@@ -23,7 +22,7 @@ contract LendingContract {
         address borrower;
         uint256 amount;
         uint256 dueDate;
-        uint unit;
+        uint256 unit;
         address fractonalizedToken;
     }
 
@@ -34,26 +33,31 @@ contract LendingContract {
         Days180
     }
 
-    mapping (uint => Loan) public loanInfo;
+    mapping(uint256 => Loan) public loanInfo;
     mapping(address => uint256[]) public debt;
-    uint debtId;
+    uint256 debtId;
     AssetFactory assetFactory;
     ERC20 paymentToken;
-    
 
-    constructor(address _assetFactory, address _paymentToken){
+    constructor(address _assetFactory, address _paymentToken) {
         assetFactory = AssetFactory(_assetFactory);
         paymentToken = ERC20(_paymentToken);
     }
 
-
-    function borrow(address _fractionalizedToken, uint256 _unitToDeposit, uint256 _loanAmount, TimePeriod _time) external {
+    function borrow(address _fractionalizedToken, uint256 _unitToDeposit, uint256 _loanAmount, TimePeriod _time)
+        external
+    {
         // AssetFractionaliser memory info = AssetFractionaliser(_fractionalizedToken);
         require(assetFactory.isFractioned(_fractionalizedToken) == true, "token is not fractioned");
-        require(AssetFractionaliser(_fractionalizedToken).balanceOf(msg.sender) >= _unitToDeposit, "you dont have units");
-        require(AssetFractionaliser(_fractionalizedToken).getBasePrice() * _unitToDeposit == _loanAmount, "you cannot borrow more than you own");
+        require(
+            AssetFractionaliser(_fractionalizedToken).balanceOf(msg.sender) >= _unitToDeposit, "you dont have units"
+        );
+        require(
+            AssetFractionaliser(_fractionalizedToken).getBasePrice() * _unitToDeposit == _loanAmount,
+            "you cannot borrow more than you own"
+        );
 
-        AssetFractionaliser(_fractionalizedToken).safeTransferFrom(msg.sender, address(this),  _unitToDeposit);
+        AssetFractionaliser(_fractionalizedToken).safeTransferFrom(msg.sender, address(this), _unitToDeposit);
 
         Loan memory newLoan = Loan({
             borrower: msg.sender,
@@ -63,72 +67,67 @@ contract LendingContract {
             fractonalizedToken: _fractionalizedToken
         });
 
-        
         debt[msg.sender].push(debtId);
         loanInfo[debtId] = newLoan;
         paymentToken.safeTransfer(msg.sender, _loanAmount);
         debtId++;
     }
 
-  
     function liquidate(uint256 _debtId) external {
         Loan storage loan = loanInfo[_debtId];
         require(block.timestamp >= loan.dueDate, "Debt not due");
 
         // Calculate 10% of the loan amount
-uint loanAmount = loan.amount;
-uint tenPercent = (loanAmount * 10) / 100;
+        uint256 loanAmount = loan.amount;
+        uint256 tenPercent = (loanAmount * 10) / 100;
 
+        // Transfer tokens to contract to pay off debt
+        paymentToken.safeTransferFrom(msg.sender, address(this), loan.amount + tenPercent);
 
-    // Transfer tokens to contract to pay off debt
-    paymentToken.safeTransferFrom(msg.sender, address(this), loan.amount + tenPercent);
-
-    // Remove debt from borrower's list of debts
-    uint256[] storage borrowerDebts = debt[msg.sender];
-    for (uint256 i = 0; i < borrowerDebts.length; i++) {
-        if (borrowerDebts[i] == _debtId) {
-            delete borrowerDebts[i];
-            break;
+        // Remove debt from borrower's list of debts
+        uint256[] storage borrowerDebts = debt[msg.sender];
+        for (uint256 i = 0; i < borrowerDebts.length; i++) {
+            if (borrowerDebts[i] == _debtId) {
+                delete borrowerDebts[i];
+                break;
+            }
         }
+
+        // Transfer fractionalized token back to borrower
+        AssetFractionaliser(loan.fractonalizedToken).safeTransfer(msg.sender, loan.unit);
+
+        // Clean up loan data
+        delete loanInfo[_debtId];
     }
-
-    // Transfer fractionalized token back to borrower
-    AssetFractionaliser(loan.fractonalizedToken).safeTransfer(msg.sender, loan.unit);
-
-    // Clean up loan data
-    delete loanInfo[_debtId];
-    }
-
-    
 
     function paydebt(uint256 _debtId) external {
-    Loan storage loan = loanInfo[_debtId];
-    require(block.timestamp <= loan.dueDate, "Debt already due");
+        Loan storage loan = loanInfo[_debtId];
+        require(block.timestamp <= loan.dueDate, "Debt already due");
 
-    // Transfer tokens to contract to pay off debt
-    paymentToken.safeTransferFrom(msg.sender, address(this), loan.amount);
+        // Transfer tokens to contract to pay off debt
+        paymentToken.safeTransferFrom(msg.sender, address(this), loan.amount);
 
-    // Remove debt from borrower's list of debts
-    uint256[] storage borrowerDebts = debt[msg.sender];
-    for (uint256 i = 0; i < borrowerDebts.length; i++) {
-        if (borrowerDebts[i] == _debtId) {
-            delete borrowerDebts[i];
-            break;
+        // Remove debt from borrower's list of debts
+        uint256[] storage borrowerDebts = debt[msg.sender];
+        for (uint256 i = 0; i < borrowerDebts.length; i++) {
+            if (borrowerDebts[i] == _debtId) {
+                delete borrowerDebts[i];
+                break;
+            }
         }
+
+        // Transfer fractionalized token back to borrower
+        AssetFractionaliser(loan.fractonalizedToken).safeTransfer(msg.sender, loan.unit);
+
+        // Clean up loan data
+        delete loanInfo[_debtId];
     }
 
-    // Transfer fractionalized token back to borrower
-    AssetFractionaliser(loan.fractonalizedToken).safeTransfer(msg.sender, loan.unit);
-
-    // Clean up loan data
-    delete loanInfo[_debtId];
-}
-
-  function getLoanInfo(uint num) public  view returns (Loan memory) {
+    function getLoanInfo(uint256 num) public view returns (Loan memory) {
         return loanInfo[num];
     }
 
-  function getTimeInterpreter(TimePeriod _num) public pure returns (uint) {
+    function getTimeInterpreter(TimePeriod _num) public pure returns (uint256) {
         if (_num == TimePeriod.Days14) {
             return 14 days;
         } else if (_num == TimePeriod.Days30) {
@@ -142,6 +141,4 @@ uint tenPercent = (loanAmount * 10) / 100;
             revert("Invalid time period");
         }
     }
-
-
 }

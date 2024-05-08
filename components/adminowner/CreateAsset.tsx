@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useWriteContract } from "wagmi";
 import { FaTimes } from "react-icons/fa";
 import { toast } from "react-toastify";
-import { abi } from "../../contracts/out/AssetVerification.sol/AssetVerification.json";
+import { abi } from "../../out/AssetVerification.sol/AssetVerification.json";
 import { AssetVerification } from "../../CONSTANTS.json";
 
 import { useGlobalState, setGlobalState } from "../../store";
