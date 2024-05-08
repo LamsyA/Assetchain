@@ -15,7 +15,6 @@ const Admin: React.FC = () => {
 
   return (
     <div className="text-[#b24bf3]  min-h-screen flex">
-      {/* Sidebar */}
       <div className="w-64 border-r border-white">
         <div className="p-6 ">
           <h2 className="text-2xl text-center py-2 px-4 rounded-sm font-bold text-white bg-[#b24bf3]">
@@ -32,7 +31,7 @@ const Admin: React.FC = () => {
               }`}
               onClick={() => handleTabChange("issue")}
             >
-              Issue Certificate
+              Create Asset
             </li>
             <li
               className={`cursor-pointer py-2 px-4 ${

@@ -1,9 +1,8 @@
 import { useState } from "react";
 import { useWriteContract } from "wagmi";
 import { toast } from "react-toastify";
-import { abi } from "../../out/AssetVerification.sol/AssetVerification.json";
+import { abi } from "../../contracts/out/AssetVerification.sol/AssetVerification.json";
 import { AssetVerification } from "../../CONSTANTS.json";
-
 interface CreateAssetData {
   address: string;
 }
