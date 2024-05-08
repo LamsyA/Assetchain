@@ -83,7 +83,7 @@ contract AssetVerification is ERC721, ERC721URIStorage, ERC721Pausable, Ownable,
         audtiorTeam[_auditorTeam] = _auditorTeam;
     }
 
-    function createAsset(address _owner, string memory _assetName,string memory _description, string memory _assertUri)
+    function createAsset(address _owner, string memory _assetName, string memory _description, string memory _assertUri)
         public
         onlyLegalTeam
         canNotBeZeroAddress(_owner)

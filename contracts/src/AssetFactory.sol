@@ -12,14 +12,14 @@ import {AssetVerification} from "./AssetVerification.sol";
  * @author @Olamide Adetula https://github.com/lamsya
  * @notice This is a contract for creating fractionalized real estate assets
  */
-
 contract AssetFactory is IERC721Receiver {
     address public immutable AssetNFT;
 
     // /this is a mapping of tokenId to the fractionalizers
     mapping(uint256 => address) public fractionalizers;
     mapping(uint256 => bool) public fractionalizerChekcer;
-    mapping (address => bool) public isFractioned;
+    mapping(address => bool) public isFractioned;
+
     event FractionalizerCreated(address fractionalizer, uint256 tokenId);
 
     constructor(address _assetnft) {
