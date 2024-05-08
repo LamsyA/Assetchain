@@ -1,6 +1,6 @@
 import React, { useState, FormEvent } from "react";
 import { useWriteContract } from "wagmi";
-import { abi } from "../../contracts/out/AssetVerification.sol/AssetVerification.json";
+import { abi } from "../../out/AssetVerification.sol/AssetVerification.json";
 import { ASSET_FACTORY } from "../../CONSTANTS.json";
 import { toast } from "react-toastify";
 import { FaTimes } from "react-icons/fa";
