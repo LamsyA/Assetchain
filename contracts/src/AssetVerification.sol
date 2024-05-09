@@ -33,6 +33,7 @@ contract AssetVerification is ERC721, ERC721URIStorage, ERC721Pausable, Ownable,
     // Counter for token ID
     Counters.Counter private _TokenId;
     bool setFactory;
+
     struct Asset {
         string name;
         uint256 value;

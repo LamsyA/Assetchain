@@ -127,6 +127,12 @@ contract LendingContract {
         return loanInfo[num];
     }
 
+    // @ just implemented
+
+    function getUserIdLoans(address _user) public view returns (uint256[] memory) {
+        return debt[_user];
+    }
+
     function getTimeInterpreter(TimePeriod _num) public pure returns (uint256) {
         if (_num == TimePeriod.Days14) {
             return 14 days;

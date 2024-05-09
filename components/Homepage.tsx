@@ -9,7 +9,7 @@ import FillOrder from "./FractionOrderBook/FillOrder";
 import TerminateOrder from "./FractionOrderBook/TerminateOrder";
 import router, { useRouter } from "next/router";
 import { getAccount } from "@wagmi/core";
-
+import AdminLend from "../components/Lending/AdminLend";
 import { WalletInstance } from "@rainbow-me/rainbowkit/dist/wallets/Wallet";
 
 import FractionalizeForm from "./FractionilizeContract/Fractionalize";
@@ -18,6 +18,7 @@ import CreateAsset from "./adminowner/CreateAsset";
 function Homepage() {
   return (
     <div className="">
+      <AdminLend/>
       {/* <Navbar /> */}
       <div className="">
         <Hero />
