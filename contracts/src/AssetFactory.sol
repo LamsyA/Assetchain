@@ -35,6 +35,7 @@ contract AssetFactory is IERC721Receiver {
         address _owner,
         address _pool
     ) external {
+        // @todo only admin should be able to call this funciton
         require(fractionalizers[tokenId] == address(0), "FractionalizerFactory: fractionalizer already exists");
         require(
             address(this) == IERC721(AssetNFT).ownerOf(tokenId),
@@ -56,6 +57,7 @@ contract AssetFactory is IERC721Receiver {
     }
 
     function updateAssetValueAndPricee(uint256 tokenId, uint256 newValue, uint256 newPrice) public {
+        // @todo add only owner be able to call this function
         require(tokenId > 0, "AssetFactory: Invalid tokenId");
 
         // Update asset value in AssetVerification contract
