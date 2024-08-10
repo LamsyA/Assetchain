@@ -1,12 +1,13 @@
 import { useState } from "react";
 import { useWriteContract } from 'wagmi'
-import {abi} from "../../out/FractionOrderBook.sol/FractionOrderBook.json";
-import {FractionOrderContract} from "../../CONSTANTS.json";
+// import {abi} from "../../out/FractionOrderBook.sol/FractionOrderBook.json";
+import { abi } from "../../contracts/out/OrderBook.sol/OrderBook.json";
+import { FractionOrderContract } from "../../CONSTANTS.json";
 
 const TerminateOrder = () => {
-  const { data: hash, 
-    isPending,error, writeContract } = useWriteContract();
-  
+  const { data: hash,
+    isPending, error, writeContract } = useWriteContract();
+
   const [orderId, setOrderId] = useState("");
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -17,19 +18,19 @@ const TerminateOrder = () => {
     event.preventDefault();
     console.log("Terminate Order:", orderId);
     // Add your logic to submit the terminate order data here
-    try{
+    try {
       writeContract({
-        abi, address: `0x${FractionOrderContract}`, functionName:"terminateOrder", args:[orderId]
-      },{
-        onSuccess: (data)=> {
+        abi, address: `0x${FractionOrderContract}`, functionName: "terminateOrder", args: [orderId]
+      }, {
+        onSuccess: (data) => {
           console.log("data:", data)
         },
-        onError: (error)=>{
+        onError: (error) => {
           console.log("data: error", error)
-        } 
-        
+        }
+
       })
-    }catch(error){
+    } catch (error) {
 
     }
     setOrderId(""); // Clear the form after submission
@@ -38,7 +39,7 @@ const TerminateOrder = () => {
   return (
     <form
       onSubmit={handleSubmit}
-      className="flex space-x-4 max-w-sm mx-auto px-4 py-4 bg-white rounded-lg shadow-md"
+      className="flex flex-col gap-4 mx-auto px-4 py-4 bg-base-300 rounded-lg shadow-md"
     >
       <div className="w-full">
         <label
@@ -53,13 +54,13 @@ const TerminateOrder = () => {
           name="orderId"
           value={orderId}
           onChange={handleChange}
-          className="border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-teal-500 w-full"
+          className="input input-error w-full"
           placeholder="Enter Order ID"
         />
       </div>
       <button
         type="submit"
-        className="bg-red-500 hover:bg-red-700 text-white px-2 py-1 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500" // Red button
+        className="btn btn-error w-full max-w-md" // Red button
       >
         Terminate Order
       </button>

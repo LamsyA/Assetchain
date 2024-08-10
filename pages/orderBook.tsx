@@ -19,23 +19,18 @@ const Main = () => {
         <div className="w-full md:w-3/4 px-4 py-4">
           <OrderBookGenerator />
         </div>
-        <div className="w-full  md:w-[1000px] px-4 py-4 flex justify-between ">
-          <div className="mb-4 rounded-md  border">
+        <div className="w-full md:w-[1000px] px-4 py-4 flex justify-between gap-x-24">
+          <div className="mb-4 rounded-md bg-base-300/40">
             <CreateOrder />
           </div>
-          <div className="mb-4">
-            <div className="mb-4">
-            <FillOrder />
-
+          <div className="mb-4 grow">
+            <div className="mb-8">
+              <FillOrder />
             </div>
             <div>
-            <TerminateOrder />
-
+              <TerminateOrder />
             </div>
-
           </div>
-        
-          
         </div>
       </main>
     </div>
