@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useWriteContract } from "wagmi";
-import { abi } from "../../out/FractionOrderBook.sol/FractionOrderBook.json";
+// import { abi } from "../../contracts/out/FractionOrderBook.sol/FractionOrderBook.json";
+import { abi } from "../../contracts/out/OrderBook.sol/OrderBook.json";
 import { FractionOrderContract } from "../../CONSTANTS.json";
 
 import { writeContract } from "viem/actions";
@@ -63,7 +64,7 @@ const CreateOrder = () => {
   return (
     <form
       onSubmit={handleSubmit}
-      className="items-center container mx-auto px-4 sm:px-6 lg:px-8 py-12 w-[500px] flex flex-col"
+      className="items-center container mx-auto px-4 sm:px-6 lg:px-8 py-12 w-[500px] flex flex-col gap-y-6"
     >
       <h2 className="text-xl font-bold text-[#b24bf3]">Order Type</h2>
 
@@ -77,7 +78,8 @@ const CreateOrder = () => {
           name="asset"
           value={formData.asset}
           onChange={handleChange}
-          className="border w-full border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-teal-500"
+          className="input w-full"
+          placeholder="Asset"
         />
       </div>
       <div className="flex flex-col md:w-full">
@@ -90,7 +92,8 @@ const CreateOrder = () => {
           name="amount"
           value={formData.amount}
           onChange={handleChange}
-          className="border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-teal-500"
+          className="input w-full"
+          placeholder={"Amount"}
         />
       </div>
       <div className="flex flex-col md:w-full">
@@ -103,7 +106,8 @@ const CreateOrder = () => {
           name="price"
           value={formData.price}
           onChange={handleChange}
-          className="border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-teal-500"
+          className="input w-full"
+          placeholder="Order price"
         />
       </div>
       <div className="flex flex-col md:w-full">
@@ -119,7 +123,8 @@ const CreateOrder = () => {
           name="paymentToken"
           value={formData.paymentToken}
           onChange={handleChange}
-          className="border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-teal-500"
+          className="input w-full"
+          placeholder="Enter Payment token"
         />
       </div>
       <div className="flex items-center mb-4">
@@ -149,14 +154,12 @@ const CreateOrder = () => {
         />
       </div>
 
-      <div className="mt-6">
+      <div className="">
         {" "}
         {/* Add margin-top: 6 units */}
         <button
           type="submit"
-     
-
-          className="px-6 py-3 rounded-full bg-gradient-to-r from-[#b24bf3] to-[#7e23b7] text-white font-bold text-lg hover:bg-gradient-to-r hover:from-[#b34bf367] hover:to-[#e24bf3] focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors duration-300"
+          className="px-6 py-3 rounded-box bg-gradient-to-r from-[#b24bf3] to-[#7e23b7] text-white font-bold text-lg hover:bg-gradient-to-r hover:from-[#b34bf367] hover:to-[#e24bf3] focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors duration-300"
         >
           Create Buy Order
         </button>

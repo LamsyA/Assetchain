@@ -149,21 +149,21 @@ const FractionalizeForm: React.FC = () => {
 
   return (
     <div
-      className={`fixed top-10 left-0 bottom-2 w-screen h-screen flex
-    items-center justify-center bg-black bg-opacity-50
+      className={`fixed top-0 left-0 bottom-2 w-screen h-screen flex
+    items-center justify-center bg-base-300/90
     transform transition-transform duration-300 ${fraction}`}
     >
       <div
-        className=" bg-white shadow-xl shadow-black rounded-xl
+        className="card bg-base-300 shadow-xl shadow-black rounded-xl
     w-11/12 md:w-2/5 h-7/12 p-5"
       >
         <form onSubmit={handleSubmit} className="flex flex-col">
           <div className="flex justify-between items-center">
-            <p className="font-semibold  text-black"> Fractionalize Asset</p>
+            <p className="font-semibold text-3xl"> Fractionalize Asset</p>
 
             <button
               type="button"
-              className="border-0 bg- text-black focus:outline-none "
+              className="border-0 focus:outline-none "
               onClick={onClose}
             >
               <FaTimes />
@@ -176,7 +176,7 @@ const FractionalizeForm: React.FC = () => {
                   "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRfxgAU-BU1Lj7me8cXrw0pTRQxCL75tnMd40vTqvt_hA&s"
                 }
                 alt="project title"
-                className=" h-full w-full cursor-pointer object-cover    "
+                className=" h-full w-full cursor-pointer object-cover"
               />
             </div>
           </div>
@@ -187,9 +187,7 @@ const FractionalizeForm: React.FC = () => {
             rounded-xl mt-5"
           >
             <input
-              className="block w-full bg-transparent border-0
-                 text-sm text-slate-700 focus:outline-none p-1.5 
-                 focus:ring-0"
+              className="input w-full"
               type="text"
               id="tokenId"
               name="tokenId"
@@ -204,9 +202,7 @@ const FractionalizeForm: React.FC = () => {
             rounded-xl mt-5"
           >
             <input
-              className="block w-full bg-transparent border-0
-                 text-sm text-slate-700 focus:outline-none p-1.5 
-                 focus:ring-0"
+              className="input w-full"
               type="text"
               id="assetManager"
               name="assetManager"
@@ -221,9 +217,7 @@ const FractionalizeForm: React.FC = () => {
             rounded-xl mt-5"
           >
             <input
-              className="block w-full bg-transparent border-0
-                 text-sm text-slate-700 focus:outline-none p-1.5 
-                 focus:ring-0"
+              className="input w-full"
               type="text"
               id="assetName"
               name="assetName"
@@ -239,9 +233,7 @@ const FractionalizeForm: React.FC = () => {
             rounded-xl mt-5 mr-5"
             >
               <input
-                className="block w-full bg-transparent border-0
-                 text-sm text-slate-700 focus:outline-none p-1.5 
-                 focus:ring-0"
+                className="input w-full"
                 type="text"
                 id="assetSymbol"
                 name="assetSymbol"
@@ -256,9 +248,7 @@ const FractionalizeForm: React.FC = () => {
             rounded-xl mt-5"
             >
               <input
-                className="block w-full bg-transparent border-0
-                 text-sm text-slate-700focus:outline-none p-1.5
-                 focus:ring-0"
+                className="input w-full"
                 type="text"
                 id="assetPrice"
                 name="assetPrice"
@@ -274,9 +264,7 @@ const FractionalizeForm: React.FC = () => {
             rounded-xl mt-5"
           >
             <input
-              className="block w-full bg-transparent border-0
-                 text-sm text-slate-700focus:outline-none p-1.5
-                 focus:ring-0"
+              className="input w-full"
               type="text"
               id="uri"
               name="uri"
@@ -291,9 +279,7 @@ const FractionalizeForm: React.FC = () => {
             rounded-xl mt-5"
           >
             <input
-              className="block w-full bg-transparent border-0
-                 text-sm text-slate-700focus:outline-none p-1.5 
-                 focus:ring-0"
+              className="input w-full"
               type="text"
               id="paymentToken"
               name="paymentToken"
@@ -308,9 +294,7 @@ const FractionalizeForm: React.FC = () => {
             rounded-xl mt-5"
           >
             <textarea
-              className="block w-full bg-transparent border-0
-                 text-sm text-slate-700 focus:outline-none p-2 
-                 focus:ring-0"
+              className="textarea textarea-lg w-full"
               id="description"
               name="description"
               placeholder="Description"
@@ -320,9 +304,7 @@ const FractionalizeForm: React.FC = () => {
           </div>
           <button
             type="submit"
-            className="inline-block bg-yellow-600 px-6 py-2.5 text-white
-            font-medium  leading-tight text-md rounded-full 
-            shadow-md hover:bg-yellow-700 mt-5"
+            className="btn btn-warning mt-8 rounded-box"
           >
             Fractionise Asset
           </button>

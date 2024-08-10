@@ -15,11 +15,13 @@ const Main = () => {
           <div className="mb-4">
             <CreateOrder />
           </div>
-          <div className="mb-4">
-            <FillOrder />
-          </div>
-          <div>
-            <TerminateOrder />
+          <div className="">
+            <div className="mb-4">
+              <FillOrder />
+            </div>
+            <div>
+              <TerminateOrder />
+            </div>
           </div>
         </div>
       </main>

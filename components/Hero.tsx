@@ -30,7 +30,7 @@ function Hero() {
             liquidity.
           </p>
           <div className="flex flex-col sm:flex-row cursor-pointer justify-center items-center gap-8">
-            <Link href={"orderBook"}>
+            <Link href={"orderbook"}>
               <button className="px-6 py-3 rounded-full bg-gradient-to-r from-[#b24bf3] to-[#7e23b7] text-white font-bold text-lg hover:bg-gradient-to-r hover:from-[#b34bf367] hover:to-[#e24bf3] focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors duration-300">
                 Order Book
               </button>

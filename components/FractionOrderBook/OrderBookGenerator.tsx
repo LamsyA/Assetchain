@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useWriteContract, useReadContract } from "wagmi";
-import { abi } from "../../out/FractionOrderBook.sol/FractionOrderBook.json";
+// import { abi } from "../../out/FractionOrderBook.sol/FractionOrderBook.json";
+import { abi } from "../../contracts/out/OrderBook.sol/OrderBook.json";
 import { FractionOrderContract } from "../../CONSTANTS.json";
 import OrderBook from "./OrderBook";
 import { readContract } from '@wagmi/core'
