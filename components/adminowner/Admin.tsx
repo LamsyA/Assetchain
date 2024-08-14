@@ -1,8 +1,8 @@
 import React, { useState } from "react";
-import CreateAsset from "./CreateAsset";
+import CreateAsset from "./CreateAssetModal";
 import AddLegalTeamForm from "./AddLegalTeam";
 import AddAuditorForm from "./AddAuditor";
-import CreateAssetForm from "./CreateAsset";
+import CreateAssetForm from "./CreateAssetModal";
 import Link from "next/link";
 
 const Admin: React.FC = () => {
@@ -24,37 +24,33 @@ const Admin: React.FC = () => {
               <Link href="/">Home</Link>
             </li>
             <li
-              className={`cursor-pointer py-2 px-4 ${
-                activeTab === "issue" &&
+              className={`cursor-pointer py-2 px-4 ${activeTab === "issue" &&
                 "bg-[#b24bf3] text-white rounded-lg shadow-sm shadow-orange-50"
-              }`}
+                }`}
               onClick={() => handleTabChange("issue")}
             >
               Create Asset
             </li>
             <li
-              className={`cursor-pointer py-2 px-4 ${
-                activeTab === "legalTeam" &&
+              className={`cursor-pointer py-2 px-4 ${activeTab === "legalTeam" &&
                 "bg-[#b24bf3] text-white rounded-lg shadow-sm shadow-orange-50"
-              }`}
+                }`}
               onClick={() => handleTabChange("legalTeam")}
             >
               Add Legal Team
             </li>
             <li
-              className={`cursor-pointer py-2 px-4 ${
-                activeTab === "auditor" &&
+              className={`cursor-pointer py-2 px-4 ${activeTab === "auditor" &&
                 "bg-[#b24bf3] text-white rounded-lg shadow-sm shadow-orange-50"
-              }`}
+                }`}
               onClick={() => handleTabChange("auditor")}
             >
               Add Auditor
             </li>
             <li
-              className={`cursor-pointer py-2 px-4 ${
-                activeTab === "asset" &&
+              className={`cursor-pointer py-2 px-4 ${activeTab === "asset" &&
                 "bg-[#b24bf3] text-white rounded-lg shadow-sm shadow-orange-50"
-              }`}
+                }`}
               onClick={() => handleTabChange("asset")}
             >
               Create Asset

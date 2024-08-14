@@ -14,7 +14,7 @@ import { WalletInstance } from "@rainbow-me/rainbowkit/dist/wallets/Wallet";
 
 import FractionalizeForm from "./FractionilizeContract/Fractionalize";
 import Link from "next/link";
-import CreateAsset from "./adminowner/CreateAsset";
+import CreateAsset from "./adminowner/CreateAssetModal";
 function Homepage() {
   return (
     <div className="">
@@ -22,7 +22,7 @@ function Homepage() {
       {/* <Navbar /> */}
       <div className="">
         <Hero />
-        <CreateAsset />
+        {/* <CreateAsset /> */}
       </div>
       {/* <Main/> */}
       {/* <CreateOrder /> */}

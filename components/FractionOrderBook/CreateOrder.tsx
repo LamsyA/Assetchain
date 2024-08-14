@@ -69,7 +69,7 @@ const CreateOrder = () => {
       <h2 className="text-xl font-bold text-[#b24bf3]">Order Type</h2>
 
       <div className="flex flex-col md:w-full">
-        <label htmlFor="asset" className="text-gray-100 font-medium mb-2">
+        <label htmlFor="asset" className="text-base-content font-medium mb-2">
           Asset:
         </label>
         <input
@@ -83,7 +83,7 @@ const CreateOrder = () => {
         />
       </div>
       <div className="flex flex-col md:w-full">
-        <label htmlFor="amount" className="text-gray-100 font-medium mb-2">
+        <label htmlFor="amount" className="text-base-content font-medium mb-2">
           Amount:
         </label>
         <input
@@ -97,7 +97,7 @@ const CreateOrder = () => {
         />
       </div>
       <div className="flex flex-col md:w-full">
-        <label htmlFor="price" className="text-gray-100 font-medium mb-2">
+        <label htmlFor="price" className="text-base-content font-medium mb-2">
           Price:
         </label>
         <input
@@ -113,7 +113,7 @@ const CreateOrder = () => {
       <div className="flex flex-col md:w-full">
         <label
           htmlFor="paymentToken"
-          className="text-gray-100 font-medium mb-2"
+          className="text-base-content font-medium mb-2"
         >
           Payment Token:
         </label>
@@ -127,31 +127,31 @@ const CreateOrder = () => {
           placeholder="Enter Payment token"
         />
       </div>
-      <div className="flex items-center mb-4">
-        <label htmlFor="isBuy" className="text-gray-100 font-medium mr-4">
+      <div className="flex items-center my-4 gap-x-8">
+        <label htmlFor="isBuy" className="self-center flex flex-row gap-x-4 text-base-content font-medium">
           Can Buy:
+          <input
+            type="radio"
+            id="isBuy"
+            name="isBuy"
+            value={`${true}`}
+            checked={formData.isBuy}
+            onChange={handleChange}
+            className="radio" // Add margin-right
+          />
         </label>
-        <input
-          type="radio"
-          id="isBuy"
-          name="isBuy"
-          value={`${true}`}
-          checked={formData.isBuy}
-          onChange={handleChange}
-          className="focus:ring-teal-500 focus:ring-offset-2 mr-4" // Add margin-right
-        />
-        <label htmlFor="isBuy" className="text-gray-100 font-medium mr-2">
+        <label htmlFor="isBuy" className="self-center flex flex-row gap-x-4 text-base-content font-medium">
           Can't Buy :
+          <input
+            type="radio"
+            id="isBuy" // You might want to use a unique ID here
+            name="isBuy" // Keep the same name to group them
+            value={`${false}`}
+            checked={formData.isBuy}
+            onChange={handleChange}
+            className="radio"
+          />
         </label>
-        <input
-          type="radio"
-          id="isBuy" // You might want to use a unique ID here
-          name="isBuy" // Keep the same name to group them
-          value={`${false}`}
-          checked={formData.isBuy}
-          onChange={handleChange}
-          className="focus:ring-teal-500 focus:ring-offset-2"
-        />
       </div>
 
       <div className="">
@@ -159,7 +159,7 @@ const CreateOrder = () => {
         {/* Add margin-top: 6 units */}
         <button
           type="submit"
-          className="px-6 py-3 rounded-box bg-gradient-to-r from-[#b24bf3] to-[#7e23b7] text-white font-bold text-lg hover:bg-gradient-to-r hover:from-[#b34bf367] hover:to-[#e24bf3] focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors duration-300"
+          className="px-6 py-3 rounded-box bg-[#b24bf3] hover:bg-[#7e23b7] text-white font-bold text-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors duration-300"
         >
           Create Buy Order
         </button>
