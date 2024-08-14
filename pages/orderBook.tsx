@@ -12,7 +12,7 @@ const Main = () => {
   return (
     <div className="flex flex-col min-h-screen  items-center">
       <header className="text-[#b24bf3] flex justify-between items-center px-4 py-8">
-        <h1 className="text-xl font-medium">Order Book</h1>
+        <h1 className="text-5xl font-semibold">Order Book</h1>
         {/* Add any additional header elements here */}
       </header>
       <main className="flex flex-grow flex-col overflow-hidden items-center">

@@ -64,23 +64,23 @@ const AddAuditorTeam: React.FC = () => {
 
   return (
     <div
-      className={`top-0 left-0  h-screen flex
-    items-center justify-center  bg-opacity-50
+      className={`h-screen flex
+    items-start justify-center  bg-opacity-50
    `}
     >
       <div
-        className=" bg-white shadow-xl shadow-black rounded-xl
+        className="card bg-base-300/30 rounded-xl
     w-11/12 md:w-2/5 h-7/12 p-6"
       >
         <form onSubmit={handleSubmit} className="flex flex-col">
           <div className="flex justify-center items-center">
-            <p className="font-semibold uppercase text-black">
+            <p className="card-title font-semibold">
               Add Auditor Team
             </p>
           </div>
           <div className="flex justify-between items-center bg-gray-300 rounded-xl mt-5">
             <input
-              className="block w-full bg-transparent border-0 text-sm text-slate-700 focus:outline-none p-2 focus:ring-0"
+              className="input w-full"
               type="text"
               id="address"
               name="address"
@@ -91,7 +91,8 @@ const AddAuditorTeam: React.FC = () => {
           </div>
           <button
             type="submit"
-            className="inline-block bg-[#b24bf3] px-6 py-2.5 text-white font-medium  leading-tight text-md rounded-full shadow-md hover:bg-[#8941b6] mt-5"
+            className="btn inline-block bg-[#b24bf3] px-6 py-2.5 text-white font-medium leading-tight text-md rounded-lg shadow-md hover:bg-[#8941b6] disabled:bg-[#8941b666] mt-5"
+            disabled={!formData.address}
           >
             Create Asset
           </button>
