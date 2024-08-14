@@ -17,7 +17,6 @@ interface CreateAssetData {
     address: string;
     name: string;
     description: string;
-    uri: string;
 }
 
 // Initialize IPFS client
@@ -37,7 +36,6 @@ const CreateAsset: React.FC = () => {
         address: "",
         name: "",
         description: "",
-        uri: "",
     });
 
     const handleChange = (
@@ -52,6 +50,7 @@ const CreateAsset: React.FC = () => {
         console.log("Inside handle submit");
         if (!formData.address || !formData.name) return;
         console.log("Create Asset:", formData);
+        console.log("Image URI", imageUri);
         try {
             writeContract(
                 {
@@ -62,7 +61,7 @@ const CreateAsset: React.FC = () => {
                         formData.address,
                         formData.name,
                         formData.description,
-                        formData.uri,
+                        imageUri,
                     ],
                 },
                 {
@@ -92,7 +91,6 @@ const CreateAsset: React.FC = () => {
             address: "",
             name: "",
             description: "",
-            uri: "",
         });
     };
 
@@ -112,7 +110,7 @@ const CreateAsset: React.FC = () => {
             className={"max-w-2xl mx-auto"}
         >
             <div
-                className="card bg-base-300/10 rounded-xl p-8"
+                className="card bg-base-300/10 dark:bg-base-300/40 rounded-xl p-8"
             >
                 <form onSubmit={handleSubmit} className="flex flex-col">
                     <div className="flex justify-between items-center">
@@ -181,7 +179,7 @@ const CreateAsset: React.FC = () => {
                     </div>
                     <div className="flex justify-between items-center bg-gray-300 rounded-xl mt-5">
                         <textarea
-                            className="textarea w-full"
+                            className="textarea w-full resize-none"
                             id="description"
                             name="description"
                             placeholder="Description"
@@ -198,7 +196,6 @@ const CreateAsset: React.FC = () => {
                             name="uri"
                             placeholder="Asset URI"
                             value={imageUri}
-                            onChange={handleChange}
                             disabled={true}
                         />
                     </div>
